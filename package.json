@@ -1,0 +1,34 @@
+{
+  "name": "pulsechat",
+  "version": "2.0.0",
+  "description": "PulseChat – Modern Full Stack Real-Time Chat Platform",
+  "type": "module",
+  "scripts": {
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "dev": "npm run dev:client",
+    "build": "cd client && npm install && npm run build",
+    "start": "node server/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.5.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.4",
+    "socket.io": "^4.8.1"
+  },
+  "keywords": [
+    "pulsechat",
+    "real-time",
+    "messaging",
+    "mern",
+    "socket.io",
+    "tailwind",
+    "vercel"
+  ],
+  "author": "PulseChat Team",
+  "license": "MIT"
+}
