@@ -1,7 +1,7 @@
 import React from "react";
 import { useChat } from "../context/ChatContext";
 import { useAuth } from "../context/AuthContext";
-import { X, Image as ImageIcon, LogOut, Mail, Clock, ShieldCheck } from "lucide-react";
+import { X, Image as ImageIcon, LogOut } from "lucide-react";
 
 const RightSidebar = () => {
   const { selectedUser, messages, showRightSidebar, setShowRightSidebar } = useChat();
@@ -11,7 +11,7 @@ const RightSidebar = () => {
 
   const isOnline = onlineUsers.includes(selectedUser._id);
 
-  // Extract shared media
+  // Extract all media images shared in this conversation
   const sharedMedia = messages
     .filter((msg) => msg.image && msg.image.trim() !== "")
     .map((msg) => ({
@@ -21,15 +21,13 @@ const RightSidebar = () => {
     }));
 
   return (
-    <aside className="w-72 lg:w-80 flex flex-col h-full bg-[#0a0f1d]/95 border-l border-slate-800/80 backdrop-blur-2xl p-5 overflow-y-auto select-none">
-      {/* Top Header */}
-      <div className="flex items-center justify-between pb-3.5 border-b border-slate-800/80">
-        <h3 className="text-xs uppercase font-extrabold tracking-wider text-slate-300">
-          User Intelligence
-        </h3>
+    <aside className="w-72 lg:w-80 flex flex-col h-full bg-[#130f26]/95 border-l border-purple-500/15 backdrop-blur-xl p-5 overflow-y-auto">
+      {/* Top Close bar */}
+      <div className="flex items-center justify-between pb-3 border-b border-purple-500/15">
+        <h3 className="text-sm font-bold text-white tracking-wide">Contact Details</h3>
         <button
           onClick={() => setShowRightSidebar(false)}
-          className="p-1.5 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition"
+          className="p-1.5 rounded-xl hover:bg-white/10 text-gray-400 hover:text-white transition"
         >
           <X className="w-4 h-4" />
         </button>
@@ -42,72 +40,59 @@ const RightSidebar = () => {
             <img
               src={selectedUser.profilePic}
               alt={selectedUser.fullName}
-              className="w-20 h-20 rounded-2xl object-cover ring-4 ring-emerald-500/25 shadow-xl shadow-emerald-950/40"
+              className="w-20 h-20 rounded-full object-cover ring-4 ring-purple-600/30 shadow-xl"
             />
           ) : (
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-slate-800 to-slate-700 flex items-center justify-center text-emerald-400 font-extrabold text-2xl shadow-xl border border-slate-700">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-purple-700 to-indigo-600 flex items-center justify-center text-white font-bold text-2xl shadow-xl">
               {selectedUser.fullName?.charAt(0).toUpperCase()}
             </div>
           )}
           <span
-            className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-[#0a0f1d] ${
-              isOnline ? "bg-emerald-400 online-pulse-ring" : "bg-slate-600"
+            className={`absolute bottom-1 right-1 w-4 h-4 rounded-full border-2 border-[#130f26] ${
+              isOnline ? "bg-emerald-500 ring-2 ring-emerald-500/30" : "bg-gray-500"
             }`}
           />
         </div>
 
-        <h2 className="text-base font-bold text-white flex items-center gap-1.5 justify-center">
+        <h2 className="text-base font-bold text-white flex items-center gap-2">
           {selectedUser.fullName}
-          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          <span
+            className={`w-2 h-2 rounded-full ${
+              isOnline ? "bg-emerald-400 animate-pulse" : "bg-gray-500"
+            }`}
+          />
         </h2>
 
-        <p className="text-xs text-slate-400 mt-1 max-w-[220px] leading-relaxed">
-          "{selectedUser.bio || "Active on PulseChat."}"
+        <p className="text-xs text-purple-300 mt-1 max-w-[220px] italic">
+          "{selectedUser.bio || "Hey there! I am using QuickChat."}"
         </p>
       </div>
 
-      {/* Contact Quick Details */}
-      <div className="mt-6 p-3 rounded-2xl bg-slate-900/60 border border-slate-800/80 space-y-2 text-xs">
-        <div className="flex items-center gap-2 text-slate-400">
-          <Mail className="w-3.5 h-3.5 text-emerald-400" />
-          <span className="truncate">{selectedUser.email}</span>
-        </div>
-        <div className="flex items-center gap-2 text-slate-400">
-          <Clock className="w-3.5 h-3.5 text-cyan-400" />
-          <span>Status: {isOnline ? "Online Now" : "Last Seen Recently"}</span>
-        </div>
-      </div>
-
-      {/* Shared Media Gallery */}
-      <div className="mt-6 flex-1">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2 text-xs font-bold text-slate-300 uppercase tracking-wider">
-            <ImageIcon className="w-4 h-4 text-emerald-400" />
-            <span>Shared Media</span>
-          </div>
-          <span className="text-[11px] font-semibold text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full">
-            {sharedMedia.length}
-          </span>
+      {/* Shared Media Section */}
+      <div className="mt-8 flex-1">
+        <div className="flex items-center gap-2 mb-3 text-xs font-semibold text-gray-300 uppercase tracking-wider">
+          <ImageIcon className="w-4 h-4 text-purple-400" />
+          <span>Media ({sharedMedia.length})</span>
         </div>
 
         {sharedMedia.length === 0 ? (
-          <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800/60 text-center text-xs text-slate-500">
-            No media shared yet in this conversation.
+          <div className="p-4 rounded-2xl bg-[#1b1636]/60 border border-purple-500/10 text-center text-xs text-gray-400">
+            No media shared in this conversation yet.
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1">
+          <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto pr-1">
             {sharedMedia.map((item, index) => (
               <a
                 key={item.id || index}
                 href={item.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group relative rounded-xl overflow-hidden aspect-square border border-slate-800 bg-black/40 hover:opacity-90 transition block"
+                className="group relative rounded-xl overflow-hidden aspect-square border border-purple-500/20 bg-black/40 hover:opacity-90 transition block"
               >
                 <img
                   src={item.url}
                   alt={`Shared ${index + 1}`}
-                  className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                 />
               </a>
             ))}
@@ -115,14 +100,14 @@ const RightSidebar = () => {
         )}
       </div>
 
-      {/* Bottom Logout */}
-      <div className="pt-4 border-t border-slate-800/80">
+      {/* Logout button */}
+      <div className="pt-4 border-t border-purple-500/15">
         <button
           onClick={logout}
-          className="w-full py-2.5 px-4 rounded-xl bg-slate-800/80 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 border border-slate-700/80 hover:border-rose-500/40 text-xs font-semibold flex items-center justify-center gap-2 transition"
+          className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-600 hover:opacity-95 text-white font-medium text-xs flex items-center justify-center gap-2 shadow-lg shadow-purple-600/30 transition"
         >
           <LogOut className="w-4 h-4" />
-          Logout from PulseChat
+          Logout
         </button>
       </div>
     </aside>

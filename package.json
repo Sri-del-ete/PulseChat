@@ -1,7 +1,7 @@
 {
-  "name": "pulsechat",
-  "version": "2.0.0",
-  "description": "PulseChat – Modern Full Stack Real-Time Chat Platform",
+  "name": "quickchat",
+  "version": "1.0.0",
+  "description": "QuickChat – MERN Full Stack Real-Time Chat Application",
   "type": "module",
   "scripts": {
     "dev:server": "npm run dev --prefix server",

@@ -55,7 +55,7 @@ app.use(
 app.use("/api/status", (req, res) => {
   res.json({
     status: "ok",
-    app: "PulseChat API",
+    app: "QuickChat API",
     time: new Date().toISOString(),
   });
 });
@@ -75,7 +75,7 @@ if (process.env.NODE_ENV !== "test" && !process.env.VERCEL) {
   connectDB().then(() => {
     const PORT = process.env.PORT || 5000;
     server.listen(PORT, () => {
-      console.log(`PulseChat Server running on port ${PORT}`);
+      console.log(`QuickChat Server running on port ${PORT}`);
     });
   });
 }

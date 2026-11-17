@@ -12,10 +12,10 @@ function App() {
 
   if (isCheckingAuth) {
     return (
-      <div className="h-screen w-screen bg-[#070a12] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-10 h-10 text-emerald-400 animate-spin" />
-        <p className="text-sm font-semibold text-slate-300 tracking-wide">
-          Connecting to PulseChat...
+      <div className="h-screen w-screen bg-[#0c0919] flex flex-col items-center justify-center gap-3">
+        <Loader2 className="w-10 h-10 text-purple-500 animate-spin" />
+        <p className="text-sm font-medium text-purple-300/80 tracking-wide">
+          Connecting to QuickChat...
         </p>
       </div>
     );

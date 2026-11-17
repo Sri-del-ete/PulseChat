@@ -28,7 +28,7 @@ export const signup = async (req, res) => {
       fullName,
       email,
       password: hashedPassword,
-      bio: bio || "Active on PulseChat! ⚡",
+      bio: bio || "Hey there! I am using QuickChat.",
     });
 
     const token = generateToken(newUser._id);

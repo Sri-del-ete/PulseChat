@@ -7,23 +7,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        obsidian: {
-          950: "#070a12",
-          900: "#0b101d",
-          850: "#0e1424",
-          800: "#131b2e",
-          700: "#1a253e",
-        },
-        pulseGreen: {
-          500: "#10b981",
-          400: "#34d399",
-          600: "#059669",
-        },
-        pulseCyan: {
-          500: "#06b6d4",
-          400: "#22d3ee",
-          600: "#0891b2",
-        },
+        chatBg: "#0f0c20",
+        cardBg: "rgba(22, 19, 44, 0.85)",
+        primaryPurple: "#7c3aed",
+        secondaryPurple: "#6d28d9",
+        bubbleOutgoing: "#6366f1",
+        bubbleIncoming: "#1e1b38",
       },
     },
   },

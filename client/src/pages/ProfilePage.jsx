@@ -1,13 +1,13 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Camera, ChevronLeft, Loader2, Sparkles, User, ShieldCheck } from "lucide-react";
+import { Camera, ChevronLeft, Loader2, Sparkles, User, MessageSquare } from "lucide-react";
 import { readFileAsDataURL } from "../lib/utils";
 
 const ProfilePage = () => {
   const { authUser, updateProfile, isUpdatingProfile } = useAuth();
   const [fullName, setFullName] = useState(authUser?.fullName || "");
-  const [bio, setBio] = useState(authUser?.bio || "Active on PulseChat! ⚡");
+  const [bio, setBio] = useState(authUser?.bio || "Honesty is the best policy! ✨");
   const [selectedImage, setSelectedImage] = useState(null);
   const [statusMessage, setStatusMessage] = useState({ type: "", text: "" });
   const fileInputRef = useRef(null);
@@ -55,29 +55,29 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen w-screen bg-ambient-pulse flex items-center justify-center p-4">
-      {/* Outer Card */}
-      <div className="w-full max-w-xl rounded-3xl pulse-panel shadow-2xl p-8 relative border border-slate-800">
+    <div className="min-h-screen w-screen bg-ambient flex items-center justify-center p-4">
+      {/* Outer Card matching Figure 9.4 */}
+      <div className="w-full max-w-xl rounded-3xl glass-panel shadow-2xl p-8 relative border border-purple-500/25">
         {/* Back Button */}
         <button
           onClick={() => navigate("/")}
-          className="absolute top-6 left-6 p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition flex items-center gap-1.5 text-xs font-semibold"
+          className="absolute top-6 left-6 p-2 rounded-xl bg-purple-600/20 hover:bg-purple-600/40 text-purple-200 transition flex items-center gap-1.5 text-xs font-medium"
         >
           <ChevronLeft className="w-4 h-4" />
           Back to Chat
         </button>
 
         <div className="text-center mt-4">
-          <h2 className="text-2xl font-extrabold text-white tracking-tight">Profile Settings</h2>
-          <p className="text-xs text-slate-400 mt-1">Manage your identity and appearance on PulseChat</p>
+          <h2 className="text-2xl font-bold text-white tracking-tight">Profile details</h2>
+          <p className="text-xs text-purple-300/70 mt-1">Manage your public information and avatar</p>
         </div>
 
         {statusMessage.text && (
           <div
-            className={`mt-4 p-3 rounded-xl text-xs text-center border animate-in fade-in ${
+            className={`mt-4 p-3 rounded-xl text-xs text-center border ${
               statusMessage.type === "success"
                 ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-300"
-                : "bg-rose-500/15 border-rose-500/30 text-rose-300"
+                : "bg-red-500/15 border-red-500/30 text-red-300"
             }`}
           >
             {statusMessage.text}
@@ -95,12 +95,8 @@ const ProfilePage = () => {
               className="hidden"
             />
 
-            <div
-              className="relative group cursor-pointer"
-              onClick={() => fileInputRef.current?.click()}
-              title="Click to change avatar"
-            >
-              <div className="w-28 h-28 rounded-2xl overflow-hidden ring-4 ring-emerald-500/30 shadow-2xl bg-slate-800 flex items-center justify-center">
+            <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+              <div className="w-28 h-28 rounded-full overflow-hidden ring-4 ring-purple-600/40 shadow-2xl bg-[#1b153b] flex items-center justify-center">
                 {selectedImage || authUser?.profilePic ? (
                   <img
                     src={selectedImage || authUser?.profilePic}
@@ -108,40 +104,40 @@ const ProfilePage = () => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-black font-extrabold text-3xl">
+                  <div className="w-full h-full bg-gradient-to-tr from-purple-700 to-indigo-600 flex items-center justify-center text-white font-bold text-3xl">
                     {authUser?.fullName?.charAt(0).toUpperCase() || "U"}
                   </div>
                 )}
               </div>
 
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 rounded-2xl bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center transition duration-200">
+              {/* Hover overlay with Camera */}
+              <div className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center transition duration-200">
                 <Camera className="w-6 h-6 text-white" />
-                <span className="text-[10px] text-white mt-1 font-semibold">Update</span>
+                <span className="text-[10px] text-white mt-1 font-medium">Change</span>
               </div>
             </div>
 
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="mt-3 text-xs text-emerald-400 hover:text-emerald-300 transition flex items-center gap-1.5 font-semibold"
+              className="mt-3 text-xs text-purple-300 hover:text-white transition flex items-center gap-1.5 font-medium"
             >
               <Camera className="w-3.5 h-3.5" />
-              Upload new photo
+              Upload profile image
             </button>
           </div>
 
           {/* Full Name */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Display Name</label>
+            <label className="block text-xs font-semibold text-gray-300 mb-1.5">Full Name</label>
             <div className="relative">
-              <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+              <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Your full name"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl pulse-input text-sm text-white placeholder-slate-500 focus:outline-none"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl glass-input text-sm text-white placeholder-gray-500 focus:outline-none"
                 required
               />
             </div>
@@ -149,14 +145,14 @@ const ProfilePage = () => {
 
           {/* Bio */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Biography</label>
+            <label className="block text-xs font-semibold text-gray-300 mb-1.5">Biography</label>
             <div className="relative">
               <textarea
                 rows={3}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
-                placeholder="Active on PulseChat! ⚡"
-                className="w-full p-3.5 rounded-xl pulse-input text-sm text-white placeholder-slate-500 focus:outline-none resize-none"
+                placeholder="Honesty is the best policy! ✨"
+                className="w-full p-3.5 rounded-xl glass-input text-sm text-white placeholder-gray-500 focus:outline-none resize-none"
               />
             </div>
           </div>
@@ -165,15 +161,15 @@ const ProfilePage = () => {
           <button
             type="submit"
             disabled={isUpdatingProfile}
-            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:opacity-95 text-black font-bold text-sm shadow-lg shadow-emerald-500/25 transition flex items-center justify-center gap-2 active:scale-[0.99]"
+            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-95 text-white font-semibold text-sm shadow-lg shadow-purple-600/30 transition flex items-center justify-center gap-2 active:scale-[0.99]"
           >
             {isUpdatingProfile ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin text-black" />
-                Updating Profile...
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Saving Changes...
               </>
             ) : (
-              "Save Changes"
+              "Save"
             )}
           </button>
         </form>
