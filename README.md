@@ -1,160 +1,187 @@
-# ⚡ PulseChat – Real-Time Messaging Platform
+# 💬 QuickChat – Real-Time MERN Chat Application
 
-**PulseChat** is a high-performance, real-time messaging web platform with a modern **Cyber-Obsidian & Electric Emerald** theme. Built using the **MERN** stack (MongoDB, Express.js, React 18, Node.js), **Socket.IO** bi-directional real-time communication, and **Cloudinary** media storage.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-quickchat--three--beige.vercel.app-7c3aed?style=for-the-badge&logo=vercel&logoColor=white)](https://quickchat-three-beige.vercel.app)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Socket.IO](https://img.shields.io/badge/Socket.IO-Real--Time-010101?style=for-the-badge&logo=socket.io&logoColor=white)](https://socket.io/)
 
-The project is structured and pre-configured for **instant 1-click deployment on Vercel**.
+**QuickChat** is a full-stack real-time messaging web application built with the **MERN** stack (**MongoDB, Express.js, React.js, Node.js**), **Socket.IO**, **Tailwind CSS**, and **Cloudinary**. It provides instant one-to-one messaging, online/offline presence tracking, read receipts, image sharing, and profile management wrapped in a modern dark purple glassmorphic interface.
 
----
-
-## 🚀 Key Highlights & New Features
-
-- **New Brand Identity**: Rebranded from QuickChat to **PulseChat** with active live presence pulses.
-- **Redesigned UI**:
-  - Deep obsidian dark background (`#070a12`) with frosted glass panels (`backdrop-blur-2xl`).
-  - High-impact **Electric Emerald & Cyan** glowing accents.
-  - Active user presence dots with pulsing radar rings (`online-pulse-ring`).
-  - Fluid chat bubbles, quick emoji selector (`👋`, `👍`, `🔥`, `❤️`, `✨`, `🎉`), and rich image previews.
-  - Media drawer displaying all images shared between users.
-- **Vercel-Ready Architecture**:
-  - Unified root configuration ([vercel.json](file:///C:/Users/srini/.gemini/antigravity/scratch/quickchat/vercel.json)) serving both frontend and serverless API functions under the same domain.
-  - Serverless MongoDB connection caching in [db.js](file:///C:/Users/srini/.gemini/antigravity/scratch/quickchat/server/lib/db.js).
-  - Built-in real-time fallback polling (every 3.5s) to guarantee instant live messaging even in stateless serverless environments.
+### 🌐 Live Application
+👉 **[https://quickchat-three-beige.vercel.app](https://quickchat-three-beige.vercel.app)**
 
 ---
 
-## 📁 Project Architecture
+## ✨ Key Features
 
+- **🔐 Secure User Authentication:** Registration, login, and protected routes powered by **JWT (JSON Web Tokens)** and **bcryptjs** password hashing.
+- **💬 Real-Time Messaging:** Instant bi-directional chat via **Socket.IO**, plus automatic serverless sync fallback when deployed on Vercel.
+- **🟢 Online / Offline Presence:** Live tracking of connected users with real-time status indicators in the sidebar and chat header.
+- **👀 Message Seen Status & Unread Counts:** Read receipts (`Sent` / `Seen` checkmarks) and per-contact unread message counter badges.
+- **🖼️ Image Sharing & Media Gallery:** Share images in conversations with **Cloudinary** cloud storage support and browse all shared photos in the right-hand **Media** drawer.
+- **👤 Profile Management:** Update display name, biography, and profile picture with live preview.
+- **🔍 Contact Search & Persistent History:** Search registered users and retrieve complete previous conversations from **MongoDB Atlas**.
+- **🎨 Responsive Glassmorphic Dark UI:** Styled with **Tailwind CSS** and **Lucide Icons**.
+
+---
+
+## 🏗️ System Architecture
+
+```text
+User ◄──► React.js Frontend (Vite + Tailwind CSS + Context API)
+                 │
+       REST APIs (Axios) & Real-Time (Socket.IO)
+                 │
+                 ▼
+       Node.js + Express.js Backend / Vercel Serverless API
+          │                               │
+          ▼                               ▼
+     Mongoose ODM                    Cloudinary CDN
+          │                        (Avatars & Media)
+          ▼
+    MongoDB Atlas
 ```
-quickchat/
+
+---
+
+## 📁 Project Structure
+
+```text
+QuickChat/
 ├── api/
-│   └── index.js              # Vercel Serverless Function entry point (/api/*)
-├── client/                   # Frontend (React 18 + Vite + Tailwind CSS)
-│   ├── public/
+│   └── index.js                   # Vercel serverless function entry (/api/*)
+├── client/                        # React + Vite + Tailwind CSS frontend
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── ChatContainer.jsx   # Message list, timestamps, read receipts
-│   │   │   ├── ChatHeader.jsx      # Contact header, online pulse, call actions
-│   │   │   ├── MessageInput.jsx    # Text input, emoji bar, media picker
-│   │   │   ├── NoChatSelected.jsx  # Hero welcome card with animated pulse
-│   │   │   ├── RightSidebar.jsx    # Contact details & shared media gallery
-│   │   │   └── Sidebar.jsx         # Contact list, search, active online filters
+│   │   │   ├── ChatContainer.jsx  # Chat messages, timestamps & seen receipts
+│   │   │   ├── ChatHeader.jsx     # Active contact header & info toggle
+│   │   │   ├── MessageInput.jsx   # Text input, image preview & send button
+│   │   │   ├── NoChatSelected.jsx # Welcome placeholder ("Chat anytime, anywhere")
+│   │   │   ├── RightSidebar.jsx   # Contact profile details & shared Media grid
+│   │   │   └── Sidebar.jsx        # User search, contacts, online status & unread badges
 │   │   ├── context/
-│   │   │   ├── AuthContext.jsx     # User session & socket lifecycle
-│   │   │   └── ChatContext.jsx     # Chat state & real-time sync
+│   │   │   ├── AuthContext.jsx    # Authentication state & Socket.IO client
+│   │   │   └── ChatContext.jsx    # Messaging state, read receipts & sync
 │   │   ├── lib/
-│   │   │   ├── axios.js            # Auto-detects Vercel production vs local URL
-│   │   │   └── utils.js
+│   │   │   ├── axios.js           # Axios client (auto-detects local vs Vercel /api)
+│   │   │   └── utils.js           # Time formatting & file-to-DataURL helpers
 │   │   ├── pages/
-│   │   │   ├── HomePage.jsx
-│   │   │   ├── LoginPage.jsx
-│   │   │   ├── ProfilePage.jsx
-│   │   │   └── SignUpPage.jsx
+│   │   │   ├── HomePage.jsx       # 3-column chat layout
+│   │   │   ├── LoginPage.jsx      # User login page
+│   │   │   ├── ProfilePage.jsx    # Profile editor (name, bio, avatar)
+│   │   │   └── SignUpPage.jsx     # User registration page
 │   │   ├── App.jsx
 │   │   ├── index.css
 │   │   └── main.jsx
+│   ├── .env.example
+│   ├── index.html
 │   ├── package.json
 │   ├── tailwind.config.js
 │   └── vite.config.js
-├── server/                   # Backend (Express + Node + Socket.IO)
+├── server/                        # Node.js + Express + Mongoose + Socket.IO backend
 │   ├── controllers/
-│   │   ├── messageController.js
-│   │   └── userController.js
+│   │   ├── messageController.js   # Sidebar users, history, send & mark seen
+│   │   └── userController.js      # Signup, login, auth check & profile update
 │   ├── lib/
-│   │   ├── cloudinary.js
-│   │   ├── db.js
-│   │   └── utils.js
+│   │   ├── cloudinary.js          # Cloudinary SDK setup
+│   │   ├── db.js                  # MongoDB connection (with serverless caching)
+│   │   └── utils.js               # JWT token generator
 │   ├── middleware/
-│   │   └── auth.js
+│   │   └── auth.js                # JWT protectRoute middleware
 │   ├── models/
-│   │   ├── Message.js
-│   │   └── User.js
+│   │   ├── Message.js             # Mongoose Message schema
+│   │   └── User.js                # Mongoose User schema
 │   ├── routes/
-│   │   ├── messageRoutes.js
-│   │   └── userRoutes.js
+│   │   ├── messageRoutes.js       # /api/messages endpoints
+│   │   └── userRoutes.js          # /api/auth endpoints
+│   ├── .env.example
 │   ├── package.json
 │   └── server.js
-├── package.json              # Monorepo scripts & dependencies
-├── vercel.json               # Fullstack Vercel build & route rewrites
+├── .vercelignore
+├── package.json
+├── vercel.json                    # Full-stack Vercel build & API rewrites
 └── README.md
 ```
 
 ---
 
-## ⚡ Deploying to Vercel (Instant Click-to-Run)
+## 🛠️ Local Development Setup
 
-### Step 1: Push Project to GitHub
-1. Initialize a git repository inside this folder (or your repository):
-   ```bash
-   git init
-   git add .
-   git commit -m "feat: PulseChat modern redesign and vercel setup"
-   ```
-2. Push to your GitHub account:
-   ```bash
-   git remote add origin https://github.com/<your-username>/pulsechat.git
-   git push -u origin main
-   ```
+### Prerequisites
+- **Node.js** (v18+)
+- **MongoDB Atlas** URI (or local MongoDB instance)
+- **Cloudinary** account *(optional, for CDN image storage)*
 
-### Step 2: Import into Vercel
-1. Go to [vercel.com](https://vercel.com) and log in.
-2. Click **"Add New..."** ➔ **"Project"**.
-3. Select your `pulsechat` GitHub repository and click **Import**.
-4. Leave the **Root Directory** as `./` (the root). Vercel will automatically detect the root `vercel.json`!
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Sri-del-ete/QuickChat.git
+cd QuickChat
+```
 
-### Step 3: Add Environment Variables in Vercel
-Under the **Environment Variables** section on Vercel, add:
+### 2. Configure Environment Variables
+Copy `server/.env.example` to `server/.env` and fill in your credentials:
+```env
+PORT=5000
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/quickchat?retryWrites=true&w=majority
+JWT_SECRET=your_super_secret_jwt_key
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+NODE_ENV=development
+```
 
-| Key | Value Description |
-|---|---|
-| `MONGODB_URI` | Your MongoDB Atlas connection URI (e.g. `mongodb+srv://...`) |
-| `JWT_SECRET` | A secure random string (e.g. `pulsechat_jwt_secret_key_2026`) |
-| `CLOUDINARY_CLOUD_NAME` | Your Cloudinary Cloud Name |
-| `CLOUDINARY_API_KEY` | Your Cloudinary API Key |
-| `CLOUDINARY_API_SECRET` | Your Cloudinary API Secret |
-| `NODE_ENV` | `production` |
-
-*(Optional: If you host a persistent Socket.IO server on Railway or Render, set `VITE_SOCKET_URL` to its URL. Otherwise, PulseChat's built-in intelligent polling automatically keeps chats synced in real time on Vercel).*
-
-### Step 4: Click Deploy!
-- Click **Deploy**.
-- Within 1–2 minutes, Vercel will build the frontend into `client/dist`, deploy the API routes into serverless functions (`api/index.js`), and provide you with a live URL (e.g. `https://pulsechat-xxx.vercel.app`).
-- **You can now click the link and immediately use PulseChat!**
-
----
-
-## 💻 Local Development Setup
-
-If you wish to run the app locally on your machine:
-
-### 1. Start the Backend API
+### 3. Run the Backend
 ```bash
 cd server
 npm install
 npm run dev
 ```
-*Backend runs on `http://localhost:5000`.*
+*Backend runs at `http://localhost:5000`.*
 
-### 2. Start the Frontend
-In a new terminal:
+### 4. Run the Frontend
+In a second terminal:
 ```bash
 cd client
 npm install
 npm run dev
 ```
-*Frontend runs on `http://localhost:5173`.*
+*Frontend runs at `http://localhost:5173`.*
 
 ---
 
 ## 📡 API Reference
 
-### 🔐 Authentication (`/api/auth`)
-- `POST /api/auth/signup` – Register new user with full name, email, password, and bio.
-- `POST /api/auth/login` – Login user and return JWT session token.
-- `GET /api/auth/check` – Verify token session.
-- `PUT /api/auth/update-profile` – Update full name, bio, and avatar.
+### Authentication (`/api/auth`)
+| Method | Endpoint | Description | Protected |
+| :--- | :--- | :--- | :---: |
+| `POST` | `/api/auth/signup` | Register a new user account | No |
+| `POST` | `/api/auth/login` | Authenticate user and issue JWT | No |
+| `GET` | `/api/auth/check` | Verify active user session | Yes |
+| `PUT` | `/api/auth/update-profile` | Update name, bio, and profile picture | Yes |
 
-### 💬 Messaging (`/api/messages`)
-- `GET /api/messages/users` – Retrieve all registered contacts with live unread message counts.
-- `GET /api/messages/:id` – Fetch conversation history with a selected user.
-- `POST /api/messages/send/:id` – Send text or image message (uploaded to Cloudinary).
-- `PUT /api/messages/mark/:id` – Mark messages from user as seen.
+### Messaging (`/api/messages`)
+| Method | Endpoint | Description | Protected |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/api/messages/users` | Retrieve contacts and unseen message counts | Yes |
+| `GET` | `/api/messages/:id` | Fetch conversation history with a user | Yes |
+| `POST` | `/api/messages/send/:id` | Send a text and/or image message | Yes |
+| `PUT` | `/api/messages/mark/:id` | Mark incoming messages as seen | Yes |
+
+### Socket.IO Events
+| Event | Direction | Description |
+| :--- | :--- | :--- |
+| `connection` | Client → Server | Registers socket using `query.userId` |
+| `getOnlineUsers` | Server → Client | Broadcasts array of currently online user IDs |
+| `newMessage` | Server → Client | Pushes incoming messages in real time |
+| `messagesSeen` | Server → Client | Updates read-receipt indicators for the sender |
+| `disconnect` | Client → Server | Removes user from online list and broadcasts update |
+
+---
+
+## 🚀 Deployment (Vercel)
+
+This project is deployed on **Vercel** at **[https://quickchat-three-beige.vercel.app](https://quickchat-three-beige.vercel.app)** using the root `vercel.json`:
+- Builds the Vite React frontend into `client/dist`.
+- Routes `/api/*` requests to the Express serverless handler in `api/index.js`.
+- Requires `MONGODB_URI` and `JWT_SECRET` (plus optional `CLOUDINARY_*` keys) configured in **Vercel Project Settings → Environment Variables**.

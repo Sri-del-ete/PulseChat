@@ -2,12 +2,17 @@
   "name": "quickchat",
   "version": "1.0.0",
   "description": "QuickChat – MERN Full Stack Real-Time Chat Application",
+  "homepage": "https://quickchat-three-beige.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sri-del-ete/QuickChat.git"
+  },
   "type": "module",
   "scripts": {
     "dev:server": "npm run dev --prefix server",
     "dev:client": "npm run dev --prefix client",
     "dev": "npm run dev:client",
-    "build": "cd client && npm install && npm run build",
+    "build": "cd client && npm install --include=dev && npm run build",
     "start": "node server/server.js"
   },
   "dependencies": {
@@ -21,14 +26,18 @@
     "socket.io": "^4.8.1"
   },
   "keywords": [
-    "pulsechat",
-    "real-time",
-    "messaging",
+    "quickchat",
     "mern",
+    "real-time-chat",
+    "messaging",
     "socket.io",
-    "tailwind",
+    "react",
+    "express",
+    "mongodb",
+    "tailwindcss",
+    "cloudinary",
     "vercel"
   ],
-  "author": "PulseChat Team",
+  "author": "Srinidhi Lalam",
   "license": "MIT"
 }

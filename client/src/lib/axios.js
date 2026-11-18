@@ -28,7 +28,7 @@ export const axiosInstance = axios.create({
 // Interceptor to inject authentication token
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token") || localStorage.getItem("pulse_token");
+    const token = localStorage.getItem("token");
     if (token) {
       config.headers.token = token;
       config.headers.Authorization = `Bearer ${token}`;

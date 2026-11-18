@@ -8,9 +8,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [authUser, setAuthUser] = useState(null);
-  const [token, setToken] = useState(
-    localStorage.getItem("pulse_token") || localStorage.getItem("token") || null
-  );
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -21,8 +19,7 @@ export const AuthProvider = ({ children }) => {
   // Check auth status on app start
   useEffect(() => {
     const checkAuthStatus = async () => {
-      const storedToken =
-        localStorage.getItem("pulse_token") || localStorage.getItem("token");
+      const storedToken = localStorage.getItem("token");
       if (!storedToken) {
         setIsCheckingAuth(false);
         return;
@@ -33,13 +30,11 @@ export const AuthProvider = ({ children }) => {
           setAuthUser(res.data.user);
         } else {
           setAuthUser(null);
-          localStorage.removeItem("pulse_token");
           localStorage.removeItem("token");
         }
       } catch (error) {
         console.error("Auth check failed:", error.response?.data?.message || error.message);
         setAuthUser(null);
-        localStorage.removeItem("pulse_token");
         localStorage.removeItem("token");
       } finally {
         setIsCheckingAuth(false);
@@ -106,7 +101,6 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axiosInstance.post("/auth/signup", data);
       if (res.data.success) {
-        localStorage.setItem("pulse_token", res.data.token);
         localStorage.setItem("token", res.data.token);
         setToken(res.data.token);
         setAuthUser(res.data.userData);
@@ -130,7 +124,6 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axiosInstance.post("/auth/login", data);
       if (res.data.success) {
-        localStorage.setItem("pulse_token", res.data.token);
         localStorage.setItem("token", res.data.token);
         setToken(res.data.token);
         setAuthUser(res.data.userData);
@@ -150,7 +143,6 @@ export const AuthProvider = ({ children }) => {
 
   // Logout
   const logout = () => {
-    localStorage.removeItem("pulse_token");
     localStorage.removeItem("token");
     setToken(null);
     setAuthUser(null);
