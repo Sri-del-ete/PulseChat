@@ -59,9 +59,18 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
-    const socketUrl = import.meta.env.VITE_SOCKET_URL;
-    // Connect socket if a valid socket server URL is defined or running locally
-    if (socketUrl || window.location.hostname === "localhost") {
+    const isRemoteHost =
+      typeof window !== "undefined" &&
+      window.location.hostname !== "localhost" &&
+      window.location.hostname !== "127.0.0.1";
+    const rawSocketUrl = import.meta.env.VITE_SOCKET_URL;
+    const socketUrl =
+      isRemoteHost && rawSocketUrl && (rawSocketUrl.includes("localhost") || rawSocketUrl.includes("127.0.0.1"))
+        ? ""
+        : rawSocketUrl;
+
+    // Connect socket if a valid non-localhost socket server URL is defined or running locally
+    if (socketUrl || !isRemoteHost) {
       try {
         const newSocket = io(socketUrl || "http://localhost:5000", {
           query: {

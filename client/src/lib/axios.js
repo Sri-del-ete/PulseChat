@@ -1,14 +1,21 @@
 import axios from "axios";
 
 const getBaseUrl = () => {
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
-  }
-  // If running in browser and deployed (e.g. on Vercel)
-  if (typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+  const envUrl = import.meta.env.VITE_API_URL;
+  const isRemoteHost =
+    typeof window !== "undefined" &&
+    window.location.hostname !== "localhost" &&
+    window.location.hostname !== "127.0.0.1";
+
+  // Never call localhost when deployed on a remote domain (e.g. Vercel)
+  if (isRemoteHost) {
+    if (envUrl && !envUrl.includes("localhost") && !envUrl.includes("127.0.0.1")) {
+      return envUrl;
+    }
     return "/api";
   }
-  return "http://localhost:5000/api";
+
+  return envUrl || "http://localhost:5000/api";
 };
 
 export const axiosInstance = axios.create({
@@ -21,7 +28,7 @@ export const axiosInstance = axios.create({
 // Interceptor to inject authentication token
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("pulse_token") || localStorage.getItem("token");
+    const token = localStorage.getItem("token") || localStorage.getItem("pulse_token");
     if (token) {
       config.headers.token = token;
       config.headers.Authorization = `Bearer ${token}`;
